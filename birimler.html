@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Girişi</title>
+    <link rel="stylesheet" href="birimler.css">
+    <style>
+        #ZamanPeriyodu {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <br><h4>TEMİZLİK KONTROL FORMU</h4>
+        <h4>BİRİMLER</h4>
+        <form id="contact-form" name="contact-form">
+            <!-- Fullname alanı -->
+            <input type="text" name="fullname" id="fullname" placeholder="Adınız Soyadınız" required><br>
+            
+            <!-- Tarih ve Saat alanı (gizli) -->
+            <input type="hidden" name="datetime" id="datetime">
+
+            <select name="Birimler" id="Birimler" required>
+                <option value="" disabled selected hidden>--Birim Seçiniz--</option>
+                <option value="Saatlik Tuvalet ve Lavabo">Saatlik Tuvalet ve Lavabo</option>
+                <option value="Acil Servis">Acil Servis</option>
+                <option value="Ameliyathane">Ameliyathane</option>
+                <option value="Ameliyathane Odaları">Ameliyathane Odaları</option>
+                <option value="Anjiyo ve Katater Laboratuvarı">Anjiyo ve Katater Laboratuvarı</option>
+                <option value="Arşiv">Arşiv</option>
+                <option value="Atık Mahali">Atık Mahali</option>
+                <option value="Berberhane">Berberhane</option>
+                <option value="Biyokimya Laboratuvarı">Biyokimya Laboratuvarı</option>
+                <option value="Biyomedikal">Biyomedikal</option>
+                <option value="Bronkoskopi">Bronkoskopi</option>
+                <option value="Çamaşırhane">Çamaşırhane</option>
+                <option value="Destek Birimler">Destek Birimler</option>
+                <option value="Diş Polikliniği">Diş Polikliniği</option>
+                <option value="Diyalizan Yoğun Bakım Ünitesi">Diyalizan Yoğun Bakım Ünitesi</option>
+                <option value="Eczane">Eczane</option>
+                <option value="Efor">Efor</option>
+                <option value="Ekg">Ekg</option>
+                <option value="Endoskopi">Endoskopi</option>
+                <option value="Holter">Holter</option>
+                <option value="Kan Alma">Kan Alma</option>
+                <option value="Kan Gazı Ünitesi">Kan Gazı Ünitesi</option>
+                <option value="Kat Yemek Ofis">Kat Yemek Ofis</option>
+                <option value="Klinik Mühendislik">Klinik Mühendislik</option>
+                <option value="Merkezi Sterilizasyon">Merkezi Sterilizasyon</option>
+                <option value="Mikrobiyoloji Laboratuvarı">Mikrobiyoloji Laboratuvarı</option>
+                <option value="Morg">Morg</option>
+                <option value="Mutfak">Mutfak</option>
+                <option value="Nükleer Tıp">Nükleer Tıp</option>
+                <option value="Ofis Koridor Depolar">Ofis Koridor Depolar</option>
+                <option value="Ortak Alanlar">Ortak Alanlar</option>
+                <option value="Pediatri Yoğun Bakım">Pediatri Yoğun Bakım</option>
+                <option value="Poliklinik">Poliklinik</option>
+                <option value="Poliklinik Tuvalet Lavabo">Poliklinik Tuvalet Lavabo</option>
+                <option value="Röntgen ve Tomografi Birimi">Röntgen ve Tomografi Birimi</option>
+                <option value="Tee">Tee</option>
+                <option value="Tranfüzyon Kan Merkezi">Tranfüzyon Kan Merkezi</option>
+                <option value="Uyku Laboratuvarı">Uyku Laboratuvarı</option>
+                <option value="Yatan Hasta Klinikleri">Yatan Hasta Klinikleri</option>
+                <option value="Yemekhane">Yemekhane</option>
+                <option value="Yoğun Bakım Ünitesi">Yoğun Bakım Ünitesi</option>
+            </select><br>
+            
+            <!-- Zaman Periyodu Başlangıçta Gizli -->
+            <select name="ZamanPeriyodu" id="ZamanPeriyodu" required>
+                <option value="" disabled selected hidden>--Zaman Periyodu Seçiniz--</option>
+                <option value="Saatlik">Saatlik</option>
+                <option value="Günlük">Günlük</option>
+                <option value="Haftalık">Haftalık</option>
+                <option value="Aylık">Aylık</option>
+            </select><br>
+        </form>
+
+        <!-- Dinamik içerik alanı -->
+        <div id="dynamic-content" class="content-section" style="display:none;"></div>
+    </div>
+
+    <script>
+        // Form yüklendiğinde datetime'ı ayarla
+        window.onload = function() {
+            var now = new Date();
+
+            // Gün, Ay ve Yıl Değerlerini Al
+            var day = String(now.getDate()).padStart(2, '0');
+            var month = String(now.getMonth() + 1).padStart(2, '0'); // Aylar 0-11 arasıdır, bu yüzden +1 ekliyoruz
+            var year = now.getFullYear();
+
+            // Saat ve Dakika Değerlerini Al
+            var hours = String(now.getHours()).padStart(2, '0');
+            var minutes = String(now.getMinutes()).padStart(2, '0');
+
+            // Tarih ve Saat Formatını Belirle: DD.MM.YYYY HH:MM
+            var formattedDatetime = `${day}.${month}.${year} ${hours}:${minutes}`;
+
+            // Tarih ve Saat Alanını Güncelle
+            var datetimeField = document.getElementById("datetime");
+            datetimeField.value = formattedDatetime; // Düzenlenmiş formatı ayarlar
+        };
+
+        // Birim seçildiğinde Zaman Periyodu'nu göster
+        document.getElementById("Birimler").addEventListener("change", function() {
+            var selectedBirim = this.value;
+            var zamanPeriyodu = document.getElementById("ZamanPeriyodu");
+
+            // Birim seçildiğinde Zaman Periyodu'nu göster
+            if (selectedBirim) {
+                zamanPeriyodu.style.display = "block";
+            } else {
+                zamanPeriyodu.style.display = "none";
+            }
+
+            // Zaman Periyodu'nu sıfırla ve dinamik içeriği gizle
+            document.getElementById("ZamanPeriyodu").value = "";
+            document.getElementById("dynamic-content").style.display = "none";
+            document.getElementById("dynamic-content").innerHTML = "";
+        });
+
+        // Zaman Periyodu seçildiğinde içerik güncelle
+        document.getElementById("ZamanPeriyodu").addEventListener("change", updateContent);
+
+        function updateContent() {
+            var selectedBirim = document.getElementById("Birimler").value;
+            var selectedPeriyod = document.getElementById("ZamanPeriyodu").value;
+            var dynamicContent = document.getElementById("dynamic-content");
+
+            if (selectedBirim && selectedPeriyod) {
+                // Harici HTML dosyasının adını belirleyin
+                var fileName = "";
+
+                if (selectedBirim === "Ameliyathane" && selectedPeriyod === "Günlük") {
+                    fileName = "Ameliyathane/AmeliyathaneGünlük.html";
+                } else if (selectedBirim === "Ameliyathane" && selectedPeriyod === "Haftalık") {
+                    fileName = "Ameliyathane/AmeliyathaneHaftalık.html";
+                } else if (selectedBirim === "Ameliyathane" && selectedPeriyod === "Aylık") {
+                    fileName = "Ameliyathane/AmeliyathaneAylık.html";
+                } else if (selectedBirim === "Ameliyathane Odaları" && selectedPeriyod === "Günlük") {
+                    fileName = "AmeliyathaneOdaları/AmeliyathaneOdalarıGünlük.html";
+                } else if (selectedBirim === "Arşiv" && selectedPeriyod === "Günlük") {
+                    fileName = "Arşiv/ArşivGünlük.html";
+                } else if (selectedBirim === "Arşiv" && selectedPeriyod === "Haftalık") {
+                    fileName = "Arşiv/ArşivHaftalık.html";
+                } else if (selectedBirim === "Arşiv" && selectedPeriyod === "Aylık") {
+                    fileName = "Arşiv/ArşivAylık.html";
+                } else if (selectedBirim === "Atık Mahali" && selectedPeriyod === "Günlük") {
+                    fileName = "AtıkMahali/AtıkMahaliGünlük.html";
+                } else if (selectedBirim === "Atık Mahali" && selectedPeriyod === "Haftalık") {
+                    fileName = "AtıkMahali/AtıkMahaliHaftalık.html";
+                } else if (selectedBirim === "Atık Mahali" && selectedPeriyod === "Aylık") {
+                    fileName = "AtıkMahali/AtıkMahaliAylık.html";
+                } else if (selectedBirim === "Berberhane" && selectedPeriyod === "Günlük") {
+                    fileName = "Berberhane/BerberhaneGünlük.html";
+                } else if (selectedBirim === "Berberhane" && selectedPeriyod === "Haftalık") {
+                    fileName = "Berberhane/BerberhaneHaftalık.html";
+                } else if (selectedBirim === "Berberhane" && selectedPeriyod === "Aylık") {
+                    fileName = "Berberhane/BerberhaneAylık.html";
+                } else if (selectedBirim === "Biyokimya Laboratuvarı" && selectedPeriyod === "Günlük") {
+                    fileName = "BiyokimyaLaboratuvarı/BiyokimyaLaboratuvarıGünlük.html";
+                } else if (selectedBirim === "Biyokimya Laboratuvarı" && selectedPeriyod === "Haftalık") {
+                    fileName = "BiyokimyaLaboratuvarı/BiyokimyaLaboratuvarıHaftalık.html";
+                } else if (selectedBirim === "Biyokimya Laboratuvarı" && selectedPeriyod === "Aylık") {
+                    fileName = "BiyokimyaLaboratuvarı/BiyokimyaLaboratuvarıAylık.html";
+                } else if (selectedBirim === "Bronkoskopi" && selectedPeriyod === "Günlük") {
+                    fileName = "Bronkoskopi/BronkoskopiGünlük.html";
+                } else if (selectedBirim === "Bronkoskopi" && selectedPeriyod === "Haftalık") {
+                    fileName = "Bronkoskopi/BronkoskopiHaftalık.html";
+                } else if (selectedBirim === "Bronkoskopi" && selectedPeriyod === "Aylık") {
+                    fileName = "Bronkoskopi/BronkoskopiAylık.html";
+                } else if (selectedBirim === "Çamaşırhane" && selectedPeriyod === "Günlük") {
+                    fileName = "Çamaşırhane/ÇamaşırhaneGünlük.html";
+                } else if (selectedBirim === "Çamaşırhane" && selectedPeriyod === "Haftalık") {
+                    fileName = "Çamaşırhane/ÇamaşırhaneHaftalık.html";
+                } else if (selectedBirim === "Çamaşırhane" && selectedPeriyod === "Aylık") {
+                    fileName = "Çamaşırhane/ÇamaşırhaneAylık.html";
+                } else if (selectedBirim === "Destek Birimler" && selectedPeriyod === "Günlük") {
+                    fileName = "DestekBirimler/DestekBirimlerGünlük.html";
+                } else if (selectedBirim === "Destek Birimler" && selectedPeriyod === "Haftalık") {
+                    fileName = "DestekBirimler/DestekBirimlerHaftalık.html";
+                } else if (selectedBirim === "Destek Birimler" && selectedPeriyod === "Aylık") {
+                    fileName = "DestekBirimler/DestekBirimlerAylık.html";
+                } else if (selectedBirim === "Diyalizan Yoğun Bakım Ünitesi" && selectedPeriyod === "Günlük") {
+                    fileName = "DiyalizanYoğunBakımÜnitesi/DiyalizanYoğunBakımÜnitesiGünlük.html";
+                } else if (selectedBirim === "Diyalizan Yoğun Bakım Ünitesi" && selectedPeriyod === "Haftalık") {
+                    fileName = "DiyalizanYoğunBakımÜnitesi/DiyalizanYoğunBakımÜnitesiHaftalık.html";
+                } else if (selectedBirim === "Diyalizan Yoğun Bakım Ünitesi" && selectedPeriyod === "Aylık") {
+                    fileName = "DiyalizanYoğunBakımÜnitesi/DiyalizanYoğunBakımÜnitesiAylık.html";
+                } else if (selectedBirim === "Eczane" && selectedPeriyod === "Günlük") {
+                    fileName = "Eczane/EczaneGünlük.html";
+                } else if (selectedBirim === "Eczane" && selectedPeriyod === "Haftalık") {
+                    fileName = "Eczane/EczaneHaftalık.html";
+                } else if (selectedBirim === "Eczane" && selectedPeriyod === "Aylık") {
+                    fileName = "Eczane/EczaneAylık.html";
+                } else if (selectedBirim === "Efor" && selectedPeriyod === "Günlük") {
+                    fileName = "Efor/EforGünlük.html";
+                } else if (selectedBirim === "Efor" && selectedPeriyod === "Haftalık") {
+                    fileName = "Efor/EforHaftalık.html";
+                } else if (selectedBirim === "Efor" && selectedPeriyod === "Aylık") {
+                    fileName = "Efor/EforAylık.html";
+                } else if (selectedBirim === "Ekg" && selectedPeriyod === "Günlük") {
+                    fileName = "Ekg/EkgGünlük.html";
+                } else if (selectedBirim === "Ekg" && selectedPeriyod === "Haftalık") {
+                    fileName = "Ekg/EkgHaftalık.html";
+                } else if (selectedBirim === "Ekg" && selectedPeriyod === "Aylık") {
+                    fileName = "Ekg/EkgAylık.html";
+                } else if (selectedBirim === "Holter" && selectedPeriyod === "Günlük") {
+                    fileName = "Holter/HolterGünlük.html";
+                } else if (selectedBirim === "Holter" && selectedPeriyod === "Haftalık") {
+                    fileName = "Holter/HolterHaftalık.html";
+                } else if (selectedBirim === "Holter" && selectedPeriyod === "Aylık") {
+                    fileName = "Holter/HolterAylık.html";
+                } else if (selectedBirim === "Kan Alma" && selectedPeriyod === "Günlük") {
+                    fileName = "KanAlma/KanAlmaGünlük.html";
+                } else if (selectedBirim === "Kan Alma" && selectedPeriyod === "Haftalık") {
+                    fileName = "KanAlma/KanAlmaHaftalık.html";
+                } else if (selectedBirim === "Kan Alma" && selectedPeriyod === "Aylık") {
+                    fileName = "KanAlma/KanAlmaAylık.html";
+                } else if (selectedBirim === "Kan Gazı Ünitesi" && selectedPeriyod === "Günlük") {
+                    fileName = "KanGazıÜnitesi/KanGazıÜnitesiGünlük.html";
+                } else if (selectedBirim === "Kan Gazı Ünitesi" && selectedPeriyod === "Haftalık") {
+                    fileName = "KanGazıÜnitesi/KanGazıÜnitesiHaftalık.html";
+                } else if (selectedBirim === "Kan Gazı Ünitesi" && selectedPeriyod === "Aylık") {
+                    fileName = "KanGazıÜnitesi/KanGazıÜnitesiAylık.html";
+                } else if (selectedBirim === "Klinik Mühendislik" && selectedPeriyod === "Günlük") {
+                    fileName = "KlinikMühendislik/KlinikMühendislikGünlük.html";
+                } else if (selectedBirim === "Klinik Mühendislik" && selectedPeriyod === "Haftalık") {
+                    fileName = "KlinikMühendislik/KlinikMühendislikHaftalık.html";
+                } else if (selectedBirim === "Klinik Mühendislik" && selectedPeriyod === "Aylık") {
+                    fileName = "KlinikMühendislik/KlinikMühendislikAylık.html";
+                } else if (selectedBirim === "Merkezi Sterilizasyon" && selectedPeriyod === "Günlük") {
+                    fileName = "MerkeziSterilizasyon/MerkeziSterilizasyonGünlük.html";
+                } else if (selectedBirim === "Merkezi Sterilizasyon" && selectedPeriyod === "Haftalık") {
+                    fileName = "MerkeziSterilizasyon/MerkeziSterilizasyonHaftalık.html";
+                } else if (selectedBirim === "Merkezi Sterilizasyon" && selectedPeriyod === "Aylık") {
+                    fileName = "MerkeziSterilizasyon/MerkeziSterilizasyonAylık.html";
+                } else if (selectedBirim === "Morg" && selectedPeriyod === "Günlük") {
+                    fileName = "Morg/MorgGünlük.html";
+                } else if (selectedBirim === "Morg" && selectedPeriyod === "Haftalık") {
+                    fileName = "Morg/MorgHaftalık.html";
+                } else if (selectedBirim === "Morg" && selectedPeriyod === "Aylık") {
+                    fileName = "Morg/MorgAylık.html";
+                } else if (selectedBirim === "Mutfak" && selectedPeriyod === "Günlük") {
+                    fileName = "Mutfak/MutfakGünlük.html";
+                } else if (selectedBirim === "Mutfak" && selectedPeriyod === "Haftalık") {
+                    fileName = "Mutfak/MutfakHaftalık.html";
+                } else if (selectedBirim === "Mutfak" && selectedPeriyod === "Aylık") {
+                    fileName = "Mutfak/MutafakAylık.html";
+                } else if (selectedBirim === "Ofis Koridor Depolar" && selectedPeriyod === "Günlük") {
+                    fileName = "OfisKoridorDepolar/OfisKoridorDepolarGünlük.html";
+                } else if (selectedBirim === "Ofis Koridor Depolar" && selectedPeriyod === "Haftalık") {
+                    fileName = "OfisKoridorDepolar/OfisKoridorDepolarHaftalık.html";
+                } else if (selectedBirim === "Ofis Koridor Depolar" && selectedPeriyod === "Aylık") {
+                    fileName = "OfisKoridorDepolar/OfisKoridorDepolarAylık.html";
+                } else if (selectedBirim === "Ortak Alanlar" && selectedPeriyod === "Günlük") {
+                    fileName = "OrtakAlanlar/OrtakAlanlarGünlük.html";
+                } else if (selectedBirim === "Ortak Alanlar" && selectedPeriyod === "Haftalık") {
+                    fileName = "OrtakAlanlar/OrtakAlanlarHaftalık.html";
+                } else if (selectedBirim === "Ortak Alanlar" && selectedPeriyod === "Aylık") {
+                    fileName = "OrtakAlanlar/OrtakAlanlarAylık.html";
+                } else if (selectedBirim === "Poliklinik" && selectedPeriyod === "Günlük") {
+                    fileName = "Poliklinik/PoliklinikGünlük.html";
+                } else if (selectedBirim === "Poliklinik" && selectedPeriyod === "Haftalık") {
+                    fileName = "Poliklinik/PoliklinikHaftalık.html";
+                } else if (selectedBirim === "Poliklinik" && selectedPeriyod === "Aylık") {
+                    fileName = "Poliklinik/PoliklinikAylık.Html";
+                } else if (selectedBirim === "Poliklinik Tuvalet Lavabo" && selectedPeriyod === "Günlük") {
+                    fileName = "PoliklinikTuvaletLavabo/PoliklinikTuvaletLavaboGünlük.html";
+                } else if (selectedBirim === "Poliklinik Tuvalet Lavabo" && selectedPeriyod === "Haftalık") {
+                    fileName = "PoliklinikTuvaletLavabo/PoliklinikTuvaletLavaboHaftalık.html";
+                } else if (selectedBirim === "Poliklinik Tuvalet Lavabo" && selectedPeriyod === "Aylık") {
+                    fileName = "PoliklinikTuvaletLavabo/PoliklinikTuvaletLavaboAylık.html";
+                } else if (selectedBirim === "Röntgen ve Tomografi Birimi" && selectedPeriyod === "Günlük") {
+                    fileName = "RöntgenveTomografiBirimi/RöntgenveTomografiBirimiGünlük.html";
+                } else if (selectedBirim === "Röntgen ve Tomografi Birimi" && selectedPeriyod === "Haftalık") {
+                    fileName = "RöntgenveTomografiBirimi/RöntgenveTomografiBirimiHaftalık.html";
+                } else if (selectedBirim === "Röntgen ve Tomografi Birimi" && selectedPeriyod === "Aylık") {
+                    fileName = "RöntgenveTomografiBirimi/RöntgenveTomografiBirimiAylık.html";
+                } else if (selectedBirim === "Tee" && selectedPeriyod === "Günlük") {
+                    fileName = "Tee/TeeGünlük.html";
+                } else if (selectedBirim === "Tee" && selectedPeriyod === "Haftalık") {
+                    fileName = "Tee/TeeHaftalık.html";
+                } else if (selectedBirim === "Tee" && selectedPeriyod === "Aylık") {
+                    fileName = "Tee/TeeAylık.html";
+                } else if (selectedBirim === "Tranfüzyon Kan Merkezi" && selectedPeriyod === "Günlük") {
+                    fileName = "TranfüzyonKanMerkezi/TranfüzyonKanMerkeziGünlük.html";
+                } else if (selectedBirim === "Tranfüzyon Kan Merkezi" && selectedPeriyod === "Haftalık") {
+                    fileName = "TranfüzyonKanMerkezi/TranfüzyonKanMerkeziHaftalık.html";
+                } else if (selectedBirim === "Tranfüzyon Kan Merkezi" && selectedPeriyod === "Aylık") {
+                    fileName = "TranfüzyonKanMerkezi/TranfüzyonKanMerkeziAylık.html";
+                } else if (selectedBirim === "Uyku Laboratuvarı" && selectedPeriyod === "Günlük") {
+                    fileName = "UykuLaboratuvarı/UykuLaboratuvarıGünlük.html";
+                } else if (selectedBirim === "Uyku Laboratuvarı" && selectedPeriyod === "Haftalık") {
+                    fileName = "UykuLaboratuvarı/UykuLaboratuvarıHaftalık.html";
+                } else if (selectedBirim === "Uyku Laboratuvarı" && selectedPeriyod === "Aylık") {
+                    fileName = "UykuLaboratuvarı/UykuLaboratuvarıAylık.html";
+                } else if (selectedBirim === "Yemekhane" && selectedPeriyod === "Günlük") {
+                    fileName = "Yemekhane/YemekhaneGünlük.html";
+                } else if (selectedBirim === "Yemekhane" && selectedPeriyod === "Haftalık") {
+                    fileName = "Yemekhane/YemekhaneHaftalık.html";
+                } else if (selectedBirim === "Yemekhane" && selectedPeriyod === "Aylık") {
+                    fileName = "Yemekhane/YemekhaneAylık.html";
+                } else if (selectedBirim === "Yoğun Bakım Ünitesi" && selectedPeriyod === "Günlük") {
+                    fileName = "YoğunBakımÜnitesi/YoğunBakımÜnitesiGünlük.html";
+                } else if (selectedBirim === "Yoğun Bakım Ünitesi" && selectedPeriyod === "Haftalık") {
+                    fileName = "YoğunBakımÜnitesi/YoğunBakımÜnitesiHaftalık.html";
+                } else if (selectedBirim === "Yoğun Bakım Ünitesi" && selectedPeriyod === "Aylık") {
+                    fileName = "YoğunBakımÜnitesi/YoğunBakımÜnitesiAylık.html";
+                } else if (selectedBirim === "Nükleer Tıp" && selectedPeriyod === "Günlük") {
+                    fileName = "NükleerTıp/NükleerTıpGünlük.html";
+                } else if (selectedBirim === "Nükleer Tıp" && selectedPeriyod === "Haftalık") {
+                    fileName = "NükleerTıp/NükleerTıpHaftalık.Html";
+                } else if (selectedBirim === "Nükleer Tıp" && selectedPeriyod === "Aylık") {
+                    fileName = "NükleerTıp/NükleerTıpAylık.html";
+                } else if (selectedBirim === "Pediatri Yoğun Bakım" && selectedPeriyod === "Günlük") {
+                    fileName = "PediatriYoğunBakım/PediatriYoğunBakımGünlük.html";
+                } else if (selectedBirim === "Pediatri Yoğun Bakım" && selectedPeriyod === "Haftalık") {
+                    fileName = "PediatriYoğunBakım/PediatriYoğunBakımHaftalık.html";
+                } else if (selectedBirim === "Pediatri Yoğun Bakım" && selectedPeriyod === "Aylık") {
+                    fileName = "PediatriYoğunBakım/PediatriYoğunBakımAylık.html";
+                } else if (selectedBirim === "Endoskopi" && selectedPeriyod === "Günlük") {
+                    fileName = "Endokopi/EndoskopiGünlük.html";
+                } else if (selectedBirim === "Endoskopi" && selectedPeriyod === "Haftalık") {
+                    fileName = "Endokopi/EndoskopHaftalık.html";
+                } else if (selectedBirim === "Endoskopi" && selectedPeriyod === "Aylık") {
+                    fileName = "Endokopi/EndoskopiAylık.html";
+                } else if (selectedBirim === "Acil Servis" && selectedPeriyod === "Günlük") {
+                    fileName = "AcilServis/AcilServisGünlük.html";
+                } else if (selectedBirim === "Acil Servis" && selectedPeriyod === "Haftalık") {
+                    fileName = "AcilServis/AcilServisHaftalık.html";
+                } else if (selectedBirim === "Acil Servis" && selectedPeriyod === "Aylık") {
+                    fileName = "AcilServis/AcilServisAylık.html";
+                } else if (selectedBirim === "Yatan Hasta Klinikleri" && selectedPeriyod === "Günlük") {
+                    fileName = "YatatnHastaKlinikleri/YatatnHastaKlinikleriGünlük.html";
+                } else if (selectedBirim === "Yatan Hasta Klinikleri" && selectedPeriyod === "Haftalık") {
+                    fileName = "YatatnHastaKlinikleri/YatatnHastaKlinikleriHaftalık.html";
+                } else if (selectedBirim === "Yatan Hasta Klinikleri" && selectedPeriyod === "Aylık") {
+                    fileName = "YatatnHastaKlinikleri/YatatnHastaKlinikleriAylık.html";
+                } else if (selectedBirim === "Diş Polikliniği" && selectedPeriyod === "Günlük") {
+                    fileName = "DişPolikliniği/DişPolikliniğiGünlük.html";
+                } else if (selectedBirim === "Diş Polikliniği" && selectedPeriyod === "Haftalık") {
+                    fileName = "DişPolikliniği/DişPolikliniğiHaftalık.html";
+                } else if (selectedBirim === "Diş Polikliniği" && selectedPeriyod === "Aylık") {
+                    fileName = "DişPolikliniği/DişPolikliniğiAylık.html";
+                } else if (selectedBirim === "Mikrobiyoloji Laboratuvarı" && selectedPeriyod === "Günlük") {
+                    fileName = "MikrobiyolojiLaboratuvarı/MikrobiyolojiLaboratuvarıGünlük.html";
+                } else if (selectedBirim === "Mikrobiyoloji Laboratuvarı" && selectedPeriyod === "Haftalık") {
+                    fileName = "MikrobiyolojiLaboratuvarı/MikrobiyolojiLaboratuvarıHaftalık.html";
+                } else if (selectedBirim === "Mikrobiyoloji Laboratuvarı" && selectedPeriyod === "Aylık") {
+                    fileName = "MikrobiyolojiLaboratuvarı/MikrobiyolojiLaboratuvarıAylık.html";
+                } else if (selectedBirim === "Anjiyo ve Katater Laboratuvarı" && selectedPeriyod === "Günlük") {
+                    fileName = "AnjiyoveKataterLaboratuvarı/AnjiyoveKataterLaboratuvarıGünlük.html";
+                } else if (selectedBirim === "Anjiyo ve Katater Laboratuvarı" && selectedPeriyod === "Haftalık") {
+                    fileName = "AnjiyoveKataterLaboratuvarı/AnjiyoveKataterLaboratuvarıHaftalık.html";
+                } else if (selectedBirim === "Anjiyo ve Katater Laboratuvarı" && selectedPeriyod === "Aylık") {
+                    fileName = "AnjiyoveKataterLaboratuvarı/AnjiyoveKataterLaboratuvarıAylık.html";
+                } else if (selectedBirim === "Biyomedikal" && selectedPeriyod === "Günlük") {
+                    fileName = "Biyomedikal/BiyomedikalGünlük.html";
+                } else if (selectedBirim === "Biyomedikal" && selectedPeriyod === "Haftalık") {
+                    fileName = "Biyomedikal/BiyomedikalHaftalık.html";
+                } else if (selectedBirim === "Biyomedikal" && selectedPeriyod === "Aylık") {
+                    fileName = "Biyomedikal/BiyomedikalAylık.html";
+                } else if (selectedBirim === "Saatlik Tuvalet ve Lavabo" && selectedPeriyod === "Saatlik") {
+                    fileName = "SaatlikTuvaletveLavabo/Saatlik.html";
+                } else if (selectedBirim === "Kat Yemek Ofis" && selectedPeriyod === "Günlük") {
+                    fileName = "KatYemekOfisi/KatYemekOfisiGünlük.html";
+                } else if (selectedBirim === "Kat Yemek Ofis" && selectedPeriyod === "Haftalık") {
+                    fileName = "KatYemekOfisi/KatYemekOfisiHaftalık.html";
+                } else if (selectedBirim === "Kat Yemek Ofis" && selectedPeriyod === "Aylık") {
+                    fileName = "KatYemekOfisi/KatYemekOfisiAylık.html";
+                } else {
+                    // Desteklenmeyen bir kombinasyon
+                    dynamicContent.style.display = "none";
+                    dynamicContent.innerHTML = "";
+                    return;
+                }
+
+
+                // Harici HTML dosyasını yükle
+                fetch(fileName)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Dosya bulunamadı');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        dynamicContent.innerHTML = data;
+                        dynamicContent.style.display = "block";
+                        attachFormListener(); // Form gönderimini yönetmek için dinleyici ekle
+                    })
+                    .catch(error => {
+                        console.error('Hata:', error);
+                        alert('İçerik yüklenirken bir hata oluştu!');
+                        dynamicContent.style.display = "none";
+                        dynamicContent.innerHTML = "";
+                    });
+            } else {
+                dynamicContent.style.display = "none";
+                dynamicContent.innerHTML = "";
+            }
+        }
+
+        // Dinamik form gönderimini yönetme
+        function attachFormListener() {
+            var dynamicForm = document.querySelector("#dynamic-content form");
+            if (dynamicForm) {
+                dynamicForm.addEventListener("submit", function(event) {
+                    event.preventDefault(); // Formun varsayılan davranışını engelle
+
+                    
+                    // "Adınız Soyadınız" alanının dolu olup olmadığını kontrol et
+                    var fullname = document.getElementById("fullname").value.trim();
+                    if (fullname === "") {
+                        alert("Lütfen adınızı ve soyadınızı giriniz.");
+                        document.getElementById("fullname").focus();
+                        return;
+                    }
+
+                    // Diğer zorunlu alanları kontrol et (Birimler ve ZamanPeriyodu)
+                    var selectedBirim = document.getElementById("Birimler").value;
+                    if (selectedBirim === "") {
+                        alert("Lütfen bir birim seçiniz.");
+                        document.getElementById("Birimler").focus();
+                        return;
+                    }
+
+                    var selectedPeriyod = document.getElementById("ZamanPeriyodu").value;
+                    if (selectedPeriyod === "") {
+                        alert("Lütfen bir zaman periyodu seçiniz.");
+                        document.getElementById("ZamanPeriyodu").focus();
+                        return;
+                    }
+
+                    const formData = new FormData(dynamicForm); // Dinamik form verilerini al
+
+                    // FormData nesnesine alanları manuel olarak ekle
+                    formData.append('Birimler', selectedBirim);
+                    formData.append('ZamanPeriyodu', selectedPeriyod);
+                    formData.append('fullname', fullname);
+                    formData.append('datetime', document.getElementById("datetime").value);
+
+                    // Radyo düğmesi seçili mi kontrol edelim (eğer varsa)
+                    var status = dynamicForm.querySelector('input[name="Yapıldı"]:checked');
+                    if (status) {
+                        formData.append('Yapıldı', status.value); // "Yapıldı" değerini formData'ya ekleyelim
+                    }
+
+                    // Verileri sunucuya gönderme
+                    fetch('https://script.google.com/macros/s/AKfycbyjtM_YQcqQQhRyYxu4c3SBn66tKmfEPN5dkj9rag-FIMFOimrf0-Lypel1rzREdfkjVw/exec', { // Sunucu adresinizi buraya ekleyin
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Sunucu hatası');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Başarılı:', data);
+                        alert('Form başarıyla gönderildi!');
+                        // Formu sıfırla
+                        document.getElementById('contact-form').reset();
+                        document.getElementById('dynamic-content').style.display = "none";
+                        document.getElementById('dynamic-content').innerHTML = "";
+                    })
+                    .catch((error) => {
+                        console.error('Hata:', error);
+                        alert('Form gönderiminde hata oluştu!');
+                    });
+                });
+            }
+        }
+    </script>
+</body>
+</html>

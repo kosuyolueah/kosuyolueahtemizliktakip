@@ -1,0 +1,153 @@
+/* Genel Sayfa Stili */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    overflow-y: auto; /* Sayfanın yukarı/aşağı kaymasını sağla */
+}
+
+/* Ana Konteyner */
+.container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    max-height: 90vh; /* Konteynerin yüksekliği ekranın %90'ı kadar */
+    overflow-y: auto; /* İçerik taşarsa kaydırılabilir yap */
+}
+
+/* Başlık Stili */
+.container h4 {
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center; /* Başlık yazısını ortala */
+}
+
+/* Form Alanı Stilleri */
+input[type="text"], select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center; /* Form içeriğini ortala */
+}
+
+/* Zaman Periyodu */
+#ZamanPeriyodu {
+    display: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* Butonlar */
+input[type="submit"], button {
+    background-color: #5cb85c;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #4cae4c;
+}
+
+/* Gizli İçerik Bölümü */
+#dynamic-content {
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    input[type="text"], select, #ZamanPeriyodu {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    h4 {
+        font-size: 20px;
+    }
+
+    input[type="submit"], button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    html, body {
+        padding: 0;
+    }
+    .container {
+        padding: 10px;
+        margin: 5px;
+        max-height: 85vh;
+    }
+
+    input[type="text"], select, #ZamanPeriyodu {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    h4 {
+        font-size: 18px;
+    }
+
+    input[type="submit"], button {
+        font-size: 12px;
+        padding: 6px;
+    }
+}
+
+@media (max-width: 320px) {
+    .container {
+        padding: 5px;
+        margin: 2px;
+        max-height: 80vh;
+    }
+
+    input[type="text"], select, #ZamanPeriyodu {
+        font-size: 12px;
+        padding: 4px;
+    }
+
+    h4 {
+        font-size: 16px;
+    }
+
+    input[type="submit"], button {
+        font-size: 10px;
+        padding: 4px;
+    }
+}

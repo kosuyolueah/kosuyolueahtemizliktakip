@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Girişi</title>
+    <link rel="stylesheet" href="birimler.css">
+</head>
+<body>
+    <div class="container">
+        <h4>KULLANICI GİRİŞ FORMU</h4>
+        <form id="contact-form" name="contact-form" onsubmit="return onSubmit()">
+            <input type="text" id="AdıSoyadı" name="AdıSoyadı" placeholder="Adınızı ve Soyadınızı Giriniz" required><br>
+            <select name="Günler" id="Günler" required>
+                <option value="" disabled selected hidden>--Lütfen Seçim Yapınız--</option>
+                <option value="Günlük">Günlük</option>
+                <option value="Haftalık">Haftalık</option>
+                <option value="Aylık">Aylık</option>
+            </select><br>
+
+            <input type="hidden" name="date-time" id="date-time">
+            <input type="submit" value="Gönder" id="submit">
+        </form>
+    </div>
+
+    <script>
+        function onSubmit() {
+            var selectedOption = document.getElementById("Günler").value;
+            var now = new Date();
+            var dateTimeField = document.getElementById("date-time");
+            dateTimeField.value = now.toLocaleString(); // Tarih ve saat bilgisini al
+
+            // Konsola mesaj yazdır
+            console.log("Seçilen seçenek: " + selectedOption);
+            console.log("Tarih ve saat: " + now.toLocaleString());
+
+            // Switch-case yapısı kullanarak yönlendirme yap
+            switch (selectedOption) {
+                case "Günlük":
+                    console.log("Yönlendirme: birimler.html");
+                    window.location.href = "birimler.html";
+                    break;
+                case "Haftalık":
+                    console.log("Yönlendirme: haftalık.html");
+                    window.location.href = "haftalık.html";
+                    break;
+                case "Aylık":
+                    console.log("Yönlendirme: aylık.html");
+                    window.location.href = "aylık.html";
+                    break;
+                default:
+                    console.log("Geçersiz seçenek, form gönderilmedi.");
+                    alert("Lütfen geçerli bir seçim yapınız.");
+                    return false; // Eğer bir seçim yapılmamışsa formun gönderilmesini engelle
+            }
+            
+            return false; // Formun gönderilmesini engelle ve yönlendirme yapılır
+        }
+    </script>
+    <script src="GoogleSheet.js"></script>
+</body>
+</html>
