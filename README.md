@@ -1,1 +1,0 @@
-# kosuyolueahtemizliktakip
