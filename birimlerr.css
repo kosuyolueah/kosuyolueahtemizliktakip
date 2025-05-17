@@ -1,0 +1,206 @@
+/* Genel Sayfa Stili */
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+html, body {
+   height: 100%;
+   font-family: Arial, sans-serif;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 1rem;
+   text-align: center;
+   overflow-y: auto; /* Sayfanın yukarı/aşağı kaymasını sağla */
+}
+
+/* Arka Plan Resmi */
+html {
+   height: 100%;
+}
+
+body {
+   background-image: url('W-Resimler/renkliresim.jpg');
+   background-size: cover;
+   background-position: right center;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   background-color: #bd2626; /* Yedek renk */
+}
+
+/* Ana Konteyner */
+.container {
+   background-color: rgba(47, 171, 202, 0.233); /* Kapsayıcıya mavi tonlarında daha saydam bir arka plan rengi veriyoruz. */
+   border: 3px solid rgba(201, 136, 93, 0.685); /* Kapsayıcının etrafına daha saydam mavi bir sınır ekliyoruz. */
+   padding: 20px;
+   border-radius: 8px;
+   box-shadow: 0px 0px 10px rgb(0, 0, 0);
+   width: 100%;
+   max-width: 400px;
+   max-height: 90vh;
+   overflow-y: auto;
+   text-align: center;
+}
+
+/* Başlık Stili */
+.container h4 {
+   margin-bottom: 1.5rem;
+   color: #020202;
+   font-weight: bold;
+   font-size: 1.5rem;
+}
+
+/* Form Alanı Stilleri */
+input[type="text"],
+select {
+   width: 100%;
+   padding: 0.625rem;
+   margin-bottom: 1.5rem;
+   border: 3px solid #ccc;
+   border-radius: 4px;
+   font-size: 1rem;
+   text-align: center;
+   background-color: #fff;
+   box-shadow: 0 2px 8px rgb(0, 0, 0);
+}
+
+/* Gizli İçerik Bölümü */
+#dynamic-content {
+   margin-top: 1.5rem;
+}
+
+/* Mobil Uyumluluk */
+@media (max-width: 768px) {
+   .container {
+       padding: 1rem;
+   }
+
+   .container h4 {
+       font-size: 1.25rem;
+   }
+}
+
+@media (max-width: 480px) {
+   html, body {
+       padding: 0;
+   }
+
+   .container {
+       padding: 0.625rem;
+       margin: 0.3125rem;
+       max-height: 85vh;
+   }
+
+   input[type="text"],
+   select {
+       font-size: 0.875rem;
+       padding: 0.375rem;
+   }
+
+   .container h4 {
+       font-size: 1.125rem;
+   }
+}
+
+@media (max-width: 320px) {
+   .container {
+       padding: 0.3125rem;
+       margin: 0.125rem;
+       max-height: 80vh;
+   }
+
+   input[type="text"],
+   select {
+       font-size: 0.75rem;
+       padding: 0.25rem;
+   }
+
+   .container h4 {
+       font-size: 1rem;
+   }
+
+   input[type="submit"],
+   button {
+       font-size: 0.625rem;
+       padding: 0.25rem;
+   }
+}
+
+/* Yükleniyor Spinner */
+#spinner {
+   display: none; /* Başlangıçta gizli */
+   position: fixed;
+   left: 50%;
+   top: 50%;
+   transform: translate(-50%, -50%);
+   z-index: 1000; /* Üstte görünmesi için */
+   background: rgba(255, 255, 255, 0.8);
+   padding: 20px;
+   border-radius: 8px;
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+   text-align: center;
+}
+
+/* Ana kutu stil */
+.kare-kutu {
+   width: 100%;
+   max-width: 375px;
+   margin: 20px auto;
+   padding: 20px;
+   text-align: left;
+   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+   background-color: rgba(189, 219, 247, 0.596);
+   border-radius: 12px;
+   border: 1px solid rgba(115, 143, 219, 0.7);
+}
+
+/* Paragraf stili */
+.kare-kutu p {
+   margin: 0 0 15px 0;
+   line-height: 1.6;
+   color: #333;
+   font-size: 16px;
+}
+
+/* Responsive tasarım için medya sorguları */
+@media (min-width: 768px) {
+   .kare-kutu {
+       max-width: 600px;
+       padding: 30px;
+   }
+}
+
+@media (max-width: 480px) {
+   .kare-kutu {
+       width: 100%;
+       padding: 15px;
+   }
+}
+
+/* Checkbox ve label arasındaki boşluğu düzenleme */
+input[type="checkbox"] {
+   margin-right: 10px;
+   transform: scale(1.2);
+   vertical-align: middle;
+}
+
+/* Label stilini iyileştirme */
+label {
+   font-size: 16px;
+   color: #000000;
+}
+
+/* Formda boşlukları kaldırma (br etiketi görünmemeli) */
+form br {
+   display: none;
+}
+
+/* Responsive form genişliği */
+@media (max-width: 600px) {
+   form {
+       width: 100%;
+       margin: 0 auto;
+   }
+}
