@@ -1,1 +1,1 @@
-A simple HTML/JS/CSS starter template
+Geçici süre hizmet dışı. yılın göktepe
